@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Digital Billboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/react-easy-crop/react-easy-crop.css" />
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: fixed; /* Prevents scrolling */
+        overscroll-behavior: none; /* Disables pull-to-refresh */
+      }
+      body {
+        font-family: 'Press Start 2P', cursive;
+      }
+      @keyframes drift {
+        from { transform: translateX(100vw); }
+        to { transform: translateX(-150px); }
+      }
+      @keyframes drift-reverse {
+        from { transform: translateX(-150px); }
+        to { transform: translateX(100vw); }
+      }
+      @keyframes fly {
+        0% { transform: translateX(-10vw) translateY(0); }
+        50% { transform: translateX(50vw) translateY(-30px); }
+        100% { transform: translateX(110vw) translateY(0); }
+      }
+      @keyframes fly-reverse {
+        0% { transform: translateX(110vw) translateY(0); }
+        50% { transform: translateX(50vw) translateY(-30px); }
+        100% { transform: translateX(-10vw) translateY(0); }
+      }
+       @keyframes twinkle {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0/index.js",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-easy-crop": "https://esm.sh/react-easy-crop",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="text-white">
+    <div id="root"></div>
+    <div id="tooltip-root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
