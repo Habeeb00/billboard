@@ -39,7 +39,7 @@ export function SuccessModal({ onClose }: SuccessModalProps) {
               href="https://www.buymeacoffee.com/habeebrahman"
               target="_blank"
               rel="noopener noreferrer"
-              className="md:hidden w-full sm:w-auto px-8 py-3 bg-yellow-400 text-black border-2 border-b-4 border-black hover:bg-yellow-500 active:border-b-2 active:mt-0.5 flex items-center justify-center gap-2 text-sm"
+              className="w-full sm:w-auto px-8 py-3 bg-yellow-400 text-black border-2 border-b-4 border-black hover:bg-yellow-500 active:border-b-2 active:mt-0.5 flex items-center justify-center gap-2 text-sm"
             >
               <span>☕</span>
               <span>Buy me a coffee</span>

@@ -21,8 +21,12 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<string>
     throw new Error('Could not get canvas context');
   }
 
-  canvas.width = pixelCrop.width;
-  canvas.height = pixelCrop.height;
+  // Optimize image size: Limit max dimension to 800px to prevent huge uploads
+  const MAX_DIMENSION = 800;
+  const scale = Math.min(1, MAX_DIMENSION / Math.max(pixelCrop.width, pixelCrop.height));
+
+  canvas.width = pixelCrop.width * scale;
+  canvas.height = pixelCrop.height * scale;
 
   ctx.drawImage(
     image,
@@ -32,8 +36,8 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<string>
     pixelCrop.height,
     0,
     0,
-    pixelCrop.width,
-    pixelCrop.height
+    canvas.width,
+    canvas.height
   );
 
   return canvas.toDataURL('image/jpeg', 0.9); // Return as high-quality JPEG
