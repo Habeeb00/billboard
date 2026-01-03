@@ -6,10 +6,9 @@
 
 The Million Dollar Homepage by Alex Tew in 2005 is a good reminder of that unpredictable beauty.
 
-Lately, I was tired of seeing billboards everywhere in Kochi, and even more tired after hearing how expensive they are. That made me wonder — **why is visibility forced, and why does it cost so much?**
+Lately, I was tired of seeing billboards everywhere in Kochi, and even more tired after hearing how expensive they are. That made me wonder  **why is visibility forced, and why does it cost so much?**
 
-What if visibility wasn’t forced?  
-What if it was chosen?
+What if the viewer choose what they want to see, so it benefits both the ad owner and the viewer.
 
 That thought became a **Digital Billboard** — where anyone can own a space for a week, with zero wastage, at a lower cost.
 
