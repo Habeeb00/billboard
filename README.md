@@ -26,15 +26,5 @@ Anyone can put up a billboard in Kochi.
 - **Interactive**: Hover over ads to see messages, click to visit links (with safety prompts).
 
 
-## 📸 Gallery
-
-<!-- Upload your screenshots here and replace the links below -->
-<img width="1915" height="938" alt="image" src="https://github.com/user-attachments/assets/b0b16a1b-4d64-4c4b-8042-b6cdfdd83b6c" />
-*Day Mode*
-
-<img width="1919" height="941" alt="image" src="https://github.com/user-attachments/assets/c522a3bc-ea19-4500-b53e-8f252b1f9ef3" />
-*Night Mode with Meteors*
-
-
 *Built with ❤️, code and curiosity by habeeb in mavelinadu.*
 
