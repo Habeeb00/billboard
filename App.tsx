@@ -560,14 +560,13 @@ function App() {
 
 
   return (
-    <main className="relative w-full overflow-hidden bg-sky-300" style={{ height: '100dvh' }}>
+    <main className="relative w-screen h-screen overflow-hidden">
       <div className={`absolute inset-0 z-0 pointer-events-none transition-colors duration-1000 ${BG_COLORS[theme]}`}>
         <DynamicBackground theme={theme} animationsEnabled={true} />
       </div>
 
-      <div className="relative z-10 w-full h-full pointer-events-none flex flex-col">
-        {/* Header / Top Controls */}
-        <div className="absolute top-4 right-4 flex flex-col sm:flex-row gap-2 pointer-events-auto z-50">
+      <div className="relative z-10 w-full h-full pointer-events-none">
+        <div className="absolute top-4 right-4 flex flex-col sm:flex-row gap-2 pointer-events-auto">
           <button
             onClick={cycleTheme}
             className="bg-yellow-400 text-black border-2 border-b-4 border-black px-2 py-1 text-xs sm:px-4 sm:py-2 sm:text-sm hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all"
@@ -594,16 +593,14 @@ function App() {
           )}
         </div>
 
-        {/* Main Content Area - Absolutely Centered for Mobile Robustness */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10 pb-16 sm:pb-0">
-          <div className="flex flex-col items-center relative scale-[0.65] sm:scale-100 origin-center transition-transform pointer-events-auto">
-            <p className={`absolute bottom-full text-white text-[10px] sm:text-xs mb-2 sm:mb-4 text-center pointer-events-none w-full transition-opacity duration-500 font-bold tracking-widest ${selectedPlots.length === 0 ? 'opacity-100' : 'opacity-0'}`} style={{ textShadow: '2px 2px #000' }}>
-              CLICK TO BOOK YOUR SLOT
+        <div className="w-full h-full flex flex-col items-center justify-end pt-16">
+          <div className="flex flex-col items-center relative">
+            <p className={`absolute bottom-full text-white text-sm mb-4 text-center pointer-events-none w-full transition-opacity duration-500 ${selectedPlots.length === 0 ? 'opacity-100' : 'opacity-0'}`} style={{ textShadow: '2px 2px rgba(0,0,0,0.7)' }}>
+              Click on the slot to book your slot
             </p>
-
-            {/* Billboard Container */}
-            <div className="bg-[#4a4a4a] p-2 sm:p-3 border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,0.5)] pointer-events-auto">
-              <div className="border-4 border-t-gray-500 border-l-gray-500 border-b-black border-r-black bg-black">
+            {/* Billboard Grid */}
+            <div className="bg-[#4a4a4a] p-2 sm:p-3 border-4 border-black shadow-[8px_8px_0px_rgba(0,0,0,0.7)] pointer-events-auto">
+              <div className="border-4 border-t-gray-300 border-l-gray-300 border-b-gray-800 border-r-gray-800">
                 <BillboardGrid
                   ads={ads}
                   selectedPlots={selectedPlots}
@@ -615,13 +612,8 @@ function App() {
               </div>
             </div>
 
-            {/* Billboard Stand / Legs */}
-            <div className="flex gap-16 mt-[-4px]">
-              <div className="w-4 h-24 sm:h-32 bg-[#2a2a2a] border-x-4 border-black relative z-[-1]"></div>
-              <div className="w-4 h-24 sm:h-32 bg-[#2a2a2a] border-x-4 border-black relative z-[-1]"></div>
-            </div>
-            {/* Base */}
-            <div className="w-64 h-4 bg-[#8B4513] border-4 border-black rounded-lg mt-[-4px] relative z-[-1]"></div>
+            {/* Billboard Stand */}
+            <div className="w-32 sm:w-40 h-60 sm:h-48 bg-green-600 border-x-4 border-b-4 border-black shadow-[inset_0_5px_0px_#ffffff4d,_inset_0_-5px_0px_#0000004d]"></div>
           </div>
         </div>
       </div>
