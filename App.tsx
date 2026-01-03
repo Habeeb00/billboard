@@ -210,14 +210,6 @@ function App() {
   const [selectionAspectRatio, setSelectionAspectRatio] = useState(1);
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    // On initial load, if this is an OAuth redirect (hash contains access_token),
-    // clean the URL by removing the hash. Supabase will still pick up the session.
-    if (window.location.hash.includes('access_token')) {
-      // Use replaceState to clean the URL without triggering a reload
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-  }, []);
 
   const fetchAds = useCallback(async () => {
     const { data, error } = await supabase
@@ -248,6 +240,10 @@ function App() {
       // If the user is now logged in, close the auth modal.
       if (session) {
         setIsAuthModalOpen(false);
+        // Clean up the URL hash after successful OAuth redirect
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
       }
     })
 
@@ -517,7 +513,7 @@ function App() {
           )}
         </div>
 
-        <div className="w-full h-full flex flex-col items-center justify-end">
+        <div className="w-full h-full flex flex-col items-center justify-end pt-16">
           <div className="flex flex-col items-center relative">
             <p className={`absolute bottom-full text-white text-sm mb-4 text-center pointer-events-none w-full transition-opacity duration-500 ${selectedPlots.length === 0 ? 'opacity-100' : 'opacity-0'}`} style={{ textShadow: '2px 2px rgba(0,0,0,0.7)' }}>
               Click on the slot to book your slot
