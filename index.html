@@ -1,50 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Digital Billboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/react-easy-crop/react-easy-crop.css" />
-    <style>
-      html, body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        position: fixed; /* Prevents scrolling */
-        overscroll-behavior: none; /* Disables pull-to-refresh */
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>The Digital Billboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/react-easy-crop/react-easy-crop.css" />
+  <style>
+    /* Fix iOS 100vh issue */
+    html {
+      height: -webkit-fill-available;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      position: fixed;
+      overscroll-behavior: none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Press Start 2P', cursive;
+      /* Safe areas for notched iPhones */
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateX(100vw);
       }
-      body {
-        font-family: 'Press Start 2P', cursive;
+
+      to {
+        transform: translateX(-150px);
       }
-      @keyframes drift {
-        from { transform: translateX(100vw); }
-        to { transform: translateX(-150px); }
+    }
+
+    @keyframes drift-reverse {
+      from {
+        transform: translateX(-150px);
       }
-      @keyframes drift-reverse {
-        from { transform: translateX(-150px); }
-        to { transform: translateX(100vw); }
+
+      to {
+        transform: translateX(100vw);
       }
-      @keyframes fly {
-        0% { transform: translateX(-10vw) translateY(0); }
-        50% { transform: translateX(50vw) translateY(-30px); }
-        100% { transform: translateX(110vw) translateY(0); }
+    }
+
+    @keyframes fly {
+      0% {
+        transform: translateX(-10vw) translateY(0);
       }
-      @keyframes fly-reverse {
-        0% { transform: translateX(110vw) translateY(0); }
-        50% { transform: translateX(50vw) translateY(-30px); }
-        100% { transform: translateX(-10vw) translateY(0); }
+
+      50% {
+        transform: translateX(50vw) translateY(-30px);
       }
-       @keyframes twinkle {
-        0%, 100% { opacity: 0.5; }
-        50% { opacity: 1; }
+
+      100% {
+        transform: translateX(110vw) translateY(0);
       }
-    </style>
+    }
+
+    @keyframes fly-reverse {
+      0% {
+        transform: translateX(110vw) translateY(0);
+      }
+
+      50% {
+        transform: translateX(50vw) translateY(-30px);
+      }
+
+      100% {
+        transform: translateX(-10vw) translateY(0);
+      }
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 0.5;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -57,11 +116,13 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="text-white">
-    <div id="root"></div>
-    <div id="tooltip-root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+
+<body class="text-white">
+  <div id="root"></div>
+  <div id="tooltip-root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
 </html>

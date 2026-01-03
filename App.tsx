@@ -39,6 +39,85 @@ const TOTAL_FREE_SLOTS = 2;
 
 const THEMES: Theme[] = ['day', 'night'];
 
+// --- Countdown Timer Component ---
+const getNextSundayMidnight = (): Date => {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0 = Sunday
+  const daysUntilSunday = dayOfWeek === 0 ? 7 : 7 - dayOfWeek;
+  const nextSunday = new Date(now);
+  nextSunday.setDate(now.getDate() + daysUntilSunday);
+  nextSunday.setHours(0, 0, 0, 0);
+  return nextSunday;
+};
+
+const CountdownTimer = () => {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const target = getNextSundayMidnight();
+      const diff = target.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      }
+
+      return {
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  return (
+    <>
+      {/* Mobile Timer - Bottom right, smaller */}
+      <div className="flex md:hidden fixed bottom-2 right-2 z-20 pointer-events-auto">
+        <div className="bg-gray-200 text-black border-2 border-b-4 border-black px-1 py-1">
+          <p className="text-[5px] text-center mb-[2px]">⏰ RESET</p>
+          <div className="flex items-center gap-[1px]">
+            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.days)}d</span>
+            <span className="text-[6px]">:</span>
+            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.hours)}h</span>
+            <span className="text-[6px]">:</span>
+            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.minutes)}m</span>
+            <span className="text-[6px]">:</span>
+            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.seconds)}s</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Timer - Bottom right */}
+      <div className="hidden md:flex fixed bottom-4 right-4 z-20 pointer-events-auto">
+        <div className="bg-gray-200 text-black border-2 border-b-4 border-black px-3 py-2">
+          <p className="text-[8px] text-center mb-2">⏰ RESET IN</p>
+          <div className="flex items-center gap-1">
+            <span className="bg-yellow-400 border-2 border-black px-2 py-1 text-sm font-bold">{pad(timeLeft.days)}d</span>
+            <span className="text-sm">:</span>
+            <span className="bg-yellow-400 border-2 border-black px-2 py-1 text-sm font-bold">{pad(timeLeft.hours)}h</span>
+            <span className="text-sm">:</span>
+            <span className="bg-yellow-400 border-2 border-black px-2 py-1 text-sm font-bold">{pad(timeLeft.minutes)}m</span>
+            <span className="text-sm">:</span>
+            <span className="bg-yellow-400 border-2 border-black px-2 py-1 text-sm font-bold">{pad(timeLeft.seconds)}s</span>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 // --- Helper Functions ---
 const isSelectionRectangular = (plots: string[]): boolean => {
   if (plots.length === 0) {
@@ -571,6 +650,8 @@ function App() {
         <span>Buy me a coffee</span>
       </a>
 
+      {/* Countdown Timer - Desktop only */}
+      <CountdownTimer />
 
       {isModalOpen && (
         <PurchaseModal
