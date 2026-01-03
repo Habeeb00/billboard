@@ -18,5 +18,5 @@ Anyone can put up a billboard in Kochi.
 **Stand out on a digital one.**
 
 
-*Built with ❤️, code and curiosity by habeeb in mavelinadu.*
+*Built with ❤️ and curiosity by habeeb from Mavelinadu.*
 
