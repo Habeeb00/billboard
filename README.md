@@ -10,7 +10,7 @@ Lately, I was tired of seeing billboards everywhere in Kochi, and even more tire
 
 What if the viewer choose what they want to see, so it benefits both the ad owner and the viewer.
 
-That thought became a **Digital Billboard** — where anyone can own a space for a week, with zero wastage, at a lower cost.
+That thought became a **Digital Billboard** — where anyone can own a space for a week.
 
 <img width="1915" height="938" alt="image" src="https://github.com/user-attachments/assets/50826131-6503-4f6b-976b-c76f2384d932" />
 
@@ -24,7 +24,7 @@ Anyone can put up a billboard in Kochi.
 - **Weekly Reset**: The board automatically resets every Sunday at midnight, giving everyone a fresh start.
 - **Responsive Retro Design**: distinct Day & Night themes with pixel-art animations (stars, meteors, clouds).
 - **Interactive**: Hover over ads to see messages, click to visit links (with safety prompts).
-- **Live Updates**: Real-time grid updates powered by Supabase.
+
 
 ## 📸 Gallery
 
