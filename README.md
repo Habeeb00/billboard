@@ -1,4 +1,4 @@
-<img width="1915" height="938" alt="image" src="https://github.com/user-attachments/assets/dcd5e9ea-cce1-4ebb-98ac-d99576163bf0" /># The Digital Billboard
+# The Digital Billboard
 
 > *"I’ve always loved how unpredictable and beautiful the internet can be."*
 
