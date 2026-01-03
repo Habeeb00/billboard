@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { createClient, Session } from '@supabase/supabase-js';
+import { Analytics } from '@vercel/analytics/react';
 import { PurchaseModal } from './components/PurchaseModal';
 import { SuccessModal } from './components/SuccessModal';
 import { BillboardGrid } from './components/BillboardGrid';
@@ -721,6 +722,8 @@ function App() {
           <AuthModal onClose={() => setIsAuthModalOpen(false)} />
         )
       }
+
+      <Analytics />
     </main >
   );
 };
