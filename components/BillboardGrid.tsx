@@ -144,7 +144,7 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({ ad, isAdmin, onDeleteAd, onMo
             style={getAdBoundingBox(ad)}
             onMouseEnter={(e) => onMouseEnter(e, ad)}
             onMouseLeave={onMouseLeave}
-            onClick={!isAdmin && ad.link ? handleLinkClick : undefined}
+            onClick={undefined} // handled by inner buttons
             aria-label={`Ad: ${ad.message}`}
         >
             <img
@@ -155,9 +155,12 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({ ad, isAdmin, onDeleteAd, onMo
             {/* Non-admin hover overlay with link */}
             {isHovered && !isAdmin && ad.link && (
                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 transition-opacity">
-                    <span className="bg-white text-black px-3 py-1 text-xs font-bold border-2 border-black shadow-md">
+                    <button
+                        onClick={handleLinkClick}
+                        className="bg-white text-black px-3 py-1 text-xs font-bold border-2 border-black shadow-md hover:bg-gray-100 active:border-b-2 active:mt-0.5"
+                    >
                         🔗 Visit
-                    </span>
+                    </button>
                 </div>
             )}
             {/* Admin hover overlay */}
@@ -316,7 +319,7 @@ export function BillboardGrid({ ads, selectedPlots, setSelectedPlots, purchasedP
     return (
         <>
             <div
-                className="w-[90vw] md:w-[70vw] max-w-[1400px] aspect-[2/1] max-h-[calc(100vh-280px)] bg-gray-900 grid grid-cols-[repeat(28,minmax(0,1fr))] grid-rows-[repeat(14,minmax(0,1fr))] gap-px border-2 border-black overflow-hidden"
+                className="w-[85vw] md:w-[70vw] max-w-[1400px] aspect-[2/1] max-h-[calc(100vh-280px)] bg-gray-900 grid grid-cols-[repeat(28,minmax(0,1fr))] grid-rows-[repeat(14,minmax(0,1fr))] gap-px border-2 border-black overflow-hidden"
             >
                 {Array.from({ length: GRID_COLS * GRID_ROWS }).map((_, index) => {
                     const row = Math.floor(index / GRID_COLS);

@@ -8,8 +8,8 @@ import type { Ad, Theme } from './types';
 
 
 // --- Supabase Configuration ---
-const supabaseUrl = "https://sexehrjneeghnomoxopq.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNleGVocmpuZWVnaG5vbW94b3BxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjEyMzYzMTQsImV4cCI6MjA3NjgxMjMxNH0.OBioxZMP4y1B3dC9seGkdEMzR3WOAeZa-rqqd3aDT3c";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   global: {
@@ -33,8 +33,8 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 });
 
 // --- Admin Configuration ---
-const ADMIN_EMAIL = "habeebrahmanofficial@gmail.com";
-const TOTAL_FREE_SLOTS = 2;
+const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL;
+const TOTAL_FREE_SLOTS = 1;
 
 
 const THEMES: Theme[] = ['day', 'night'];
@@ -83,21 +83,44 @@ const CountdownTimer = () => {
 
   return (
     <>
-      {/* Mobile Timer - Bottom right, smaller */}
+      {/* Mobile Timer - Bottom right, smaller, 2-row layout for compactness */}
       <div className="flex md:hidden fixed bottom-2 right-2 z-20 pointer-events-auto">
-        <div className="bg-gray-200 text-black border-2 border-b-4 border-black px-1 py-1">
+        <div className="bg-gray-200 text-black border-2 border-b-4 border-black px-1 py-1 min-w-[60px]">
           <p className="text-[5px] text-center mb-[2px]">⏰ RESET</p>
-          <div className="flex items-center gap-[1px]">
-            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.days)}d</span>
-            <span className="text-[6px]">:</span>
-            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.hours)}h</span>
-            <span className="text-[6px]">:</span>
-            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.minutes)}m</span>
-            <span className="text-[6px]">:</span>
-            <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.seconds)}s</span>
+          <div className="flex flex-col gap-[1px]">
+            {/* Row 1: Days : Hours */}
+            <div className="flex items-center justify-center gap-[1px]">
+              <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.days)}d</span>
+              <span className="text-[6px]">:</span>
+              <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.hours)}h</span>
+            </div>
+            {/* Row 2: Mins : Secs */}
+            <div className="flex items-center justify-center gap-[1px]">
+              <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.minutes)}m</span>
+              <span className="text-[6px]">:</span>
+              <span className="bg-yellow-400 border border-black px-[3px] py-[1px] text-[8px] font-bold">{pad(timeLeft.seconds)}s</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile Support/Coffee Button - Bottom left, matches Timer style */}
+      <a
+        href="https://www.buymeacoffee.com/habeebrahman"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex md:hidden fixed bottom-2 left-2 z-20 pointer-events-auto no-underline"
+      >
+        <div className="bg-gray-200 text-black border-2 border-b-4 border-black px-1 py-1 min-w-[60px] flex flex-col justify-between">
+          <p className="text-[5px] text-center mb-[2px] uppercase">Support</p>
+          <div className="flex-1 flex items-center justify-center bg-yellow-400 border border-black px-[3px] py-[1px]">
+            <span className="text-[8px] font-bold flex items-center gap-1">
+              <span>☕</span>
+              <span>COFFEE</span>
+            </span>
+          </div>
+        </div>
+      </a>
 
       {/* Desktop Timer - Bottom right */}
       <div className="hidden md:flex fixed bottom-4 right-4 z-20 pointer-events-auto">
@@ -165,6 +188,18 @@ const Cloud: React.FC<{ style: React.CSSProperties; imgSrc: string }> = ({ style
 
 const Star: React.FC<{ style: React.CSSProperties }> = ({ style }) => {
   return <div className="absolute bg-white w-1 h-1 rounded-full" style={{ ...style, animation: `twinkle ${Math.random() * 3 + 2}s infinite` }}></div>;
+};
+
+const Meteor: React.FC<{ style: React.CSSProperties }> = ({ style }) => {
+  return (
+    <div
+      className="absolute h-[2px] w-[60px] bg-gradient-to-r from-white to-transparent opacity-0"
+      style={{
+        ...style,
+        boxShadow: '0 0 8px 1px rgba(255, 255, 255, 0.6)'
+      }}
+    ></div>
+  );
 };
 
 const Sun = () => {
@@ -243,6 +278,17 @@ function DynamicBackgroundComponent({ theme, animationsEnabled }: { theme: Theme
     left: `${Math.random() * 100}%`,
   })), []);
 
+  // Create more meteors with wider distribution to avoid repetitive patterns
+  const meteors = useMemo(() => Array.from({ length: 8 }).map(() => ({
+    style: {
+      top: `${Math.random() * 100 - 20}%`, // Start from above screen to lower
+      left: `${Math.random() * 120 - 10}%`, // Random horizontal position
+      animation: `meteor ${Math.random() * 5 + 3}s linear infinite`,
+      animationDelay: `${Math.random() * 10}s`,
+      opacity: 0,
+    }
+  })), []);
+
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
       {/* Sun Wrapper: Animates using smooth CSS transitions */}
@@ -264,6 +310,7 @@ function DynamicBackgroundComponent({ theme, animationsEnabled }: { theme: Theme
       {/* Night elements */}
       <div className={`absolute inset-0 ${animationsEnabled ? 'transition-opacity duration-[1500ms]' : ''} ${theme === 'night' ? 'opacity-100' : 'opacity-0'}`}>
         {animationsEnabled && stars.map((style, i) => <Star key={`s-${i}`} style={style} />)}
+        {animationsEnabled && meteors.map((meteor, i) => <Meteor key={`m-${i}`} style={meteor.style} />)}
         {animationsEnabled && nightBirds.map(({ style, imgSrc }, i) => (
           <Bird
             key={`nb-${i}`}
@@ -523,7 +570,7 @@ function App() {
         <button
           onClick={() => setIsAuthModalOpen(true)}
           disabled={!isSelectionValid}
-          className="px-4 py-2 bg-blue-500 text-white border-2 border-b-4 border-black hover:bg-blue-600 active:border-b-2 active:mt-0.5 transition-all text-sm whitespace-nowrap disabled:bg-gray-500 disabled:cursor-not-allowed disabled:border-b-2"
+          className="px-3 py-1 sm:px-4 sm:py-2 bg-blue-500 text-white border-2 border-b-4 border-black hover:bg-blue-600 active:border-b-2 active:mt-0.5 transition-all text-xs sm:text-sm whitespace-nowrap disabled:bg-gray-500 disabled:cursor-not-allowed disabled:border-b-2"
           aria-label="Login to book selected plots"
         >
           Login to Book ({selectedPlots.length})
@@ -537,7 +584,7 @@ function App() {
       return (
         <a
           href={mailtoHref}
-          className="px-4 py-2 bg-yellow-400 text-black border-2 border-b-4 border-black hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all text-sm whitespace-nowrap text-center"
+          className="px-3 py-1 sm:px-4 sm:py-2 bg-yellow-400 text-black border-2 border-b-4 border-black hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all text-xs sm:text-sm whitespace-nowrap text-center"
           aria-label="Contact for more slots"
         >
           Contact ({selectedPlots.length})
@@ -549,7 +596,7 @@ function App() {
       <button
         onClick={handleOpenModal}
         disabled={!isSelectionValid}
-        className="px-4 py-2 bg-blue-500 text-white border-2 border-b-4 border-black hover:bg-blue-600 active:border-b-2 active:mt-0.5 transition-all text-sm whitespace-nowrap disabled:bg-gray-500 disabled:cursor-not-allowed disabled:border-b-2"
+        className="px-3 py-1 sm:px-4 sm:py-2 bg-blue-500 text-white border-2 border-b-4 border-black hover:bg-blue-600 active:border-b-2 active:mt-0.5 transition-all text-xs sm:text-sm whitespace-nowrap disabled:bg-gray-500 disabled:cursor-not-allowed disabled:border-b-2"
         aria-label={`Book ${selectedPlots.length} selected plots`}
       >
         Book Selection ({selectedPlots.length})
@@ -595,7 +642,7 @@ function App() {
 
         <div className="w-full h-full flex flex-col items-center justify-end pt-16">
           <div className="flex flex-col items-center relative">
-            <p className={`absolute bottom-full text-white text-sm mb-4 text-center pointer-events-none w-full transition-opacity duration-500 ${selectedPlots.length === 0 ? 'opacity-100' : 'opacity-0'}`} style={{ textShadow: '2px 2px rgba(0,0,0,0.7)' }}>
+            <p className={`absolute bottom-full text-white text-[10px] sm:text-sm mb-4 text-center pointer-events-none w-full transition-opacity duration-500 ${selectedPlots.length === 0 ? 'opacity-100' : 'opacity-0'}`} style={{ textShadow: '2px 2px rgba(0,0,0,0.7)' }}>
               Click on the slot to book your slot
             </p>
             {/* Billboard Grid */}
@@ -613,16 +660,16 @@ function App() {
             </div>
 
             {/* Billboard Stand */}
-            <div className="w-32 sm:w-40 h-60 sm:h-48 bg-green-600 border-x-4 border-b-4 border-black shadow-[inset_0_5px_0px_#ffffff4d,_inset_0_-5px_0px_#0000004d]"></div>
+            <div className="w-16 sm:w-40 h-60 sm:h-48 bg-green-600 border-x-4 border-b-4 border-black shadow-[inset_0_5px_0px_#ffffff4d,_inset_0_-5px_0px_#0000004d]"></div>
           </div>
         </div>
       </div>
 
       {/* Booking Controls - Fixed at bottom */}
       {selectedPlots.length > 0 && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-auto">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-auto">
           {session && !isAdmin && (
-            <p className="text-xs sm:text-sm text-white bg-black/50 px-3 py-1 rounded">
+            <p className="text-[10px] sm:text-sm text-white bg-black/50 px-2 py-1 sm:px-3 rounded">
               Free Slots Remaining: {freeSlotsBeforeSelection} / {TOTAL_FREE_SLOTS}
             </p>
           )}
@@ -630,7 +677,7 @@ function App() {
             {renderBookingButton()}
             <button
               onClick={handleClearSelection}
-              className="px-4 py-2 bg-red-500 text-white border-2 border-b-4 border-black hover:bg-red-600 active:border-b-2 active:mt-0.5 transition-all text-sm"
+              className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white border-2 border-b-4 border-black hover:bg-red-600 active:border-b-2 active:mt-0.5 transition-all text-xs sm:text-sm"
               aria-label="Clear current selection"
             >
               Clear
@@ -643,7 +690,7 @@ function App() {
         href="https://www.buymeacoffee.com/habeebrahman"
         target="_blank"
         rel="noopener noreferrer"
-        className="hidden md:inline-flex items-center gap-2 fixed bottom-4 left-4 z-20 px-3 py-2 bg-yellow-400 text-black border-2 border-b-4 border-black hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all text-sm pointer-events-auto"
+        className="hidden md:inline-flex items-center gap-2 fixed bottom-6 left-4 z-20 px-3 py-2 bg-yellow-400 text-black border-2 border-b-4 border-black hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all text-sm pointer-events-auto"
         aria-label="Support the creator by buying them a coffee"
       >
         <span>☕</span>
@@ -653,22 +700,28 @@ function App() {
       {/* Countdown Timer - Desktop only */}
       <CountdownTimer />
 
-      {isModalOpen && (
-        <PurchaseModal
-          onClose={handleCloseModal}
-          onPurchase={handlePurchase}
-          aspectRatio={selectionAspectRatio}
-        />
-      )}
+      {
+        isModalOpen && (
+          <PurchaseModal
+            onClose={handleCloseModal}
+            onPurchase={handlePurchase}
+            aspectRatio={selectionAspectRatio}
+          />
+        )
+      }
 
-      {isSuccessModalOpen && (
-        <SuccessModal onClose={handleCloseSuccessModal} />
-      )}
+      {
+        isSuccessModalOpen && (
+          <SuccessModal onClose={handleCloseSuccessModal} />
+        )
+      }
 
-      {isAuthModalOpen && (
-        <AuthModal onClose={() => setIsAuthModalOpen(false)} />
-      )}
-    </main>
+      {
+        isAuthModalOpen && (
+          <AuthModal onClose={() => setIsAuthModalOpen(false)} />
+        )
+      }
+    </main >
   );
 };
 

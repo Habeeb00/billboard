@@ -46,7 +46,7 @@ export function AuthModal({ onClose }: AuthModalProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-30 p-4">
-      <div className="bg-gray-200 border-4 border-black p-6 sm:p-8 w-full max-w-sm relative text-black">
+      <div className="bg-gray-200 border-4 border-black p-6 sm:p-8 w-full max-w-sm max-h-[90vh] overflow-y-auto relative text-black">
         <button onClick={onClose} className="absolute -top-2 -right-2 bg-red-500 border-2 border-black w-8 h-8 text-white font-bold text-xl hover:bg-red-600 flex items-center justify-center z-10">
           <span className="mb-0.5">X</span>
         </button>

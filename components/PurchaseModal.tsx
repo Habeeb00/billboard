@@ -77,7 +77,7 @@ interface UploadIconProps {
 function UploadIcon({ className }: UploadIconProps) {
   return (
     <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3 3-3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
     </svg>
   );
 }
@@ -195,21 +195,21 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-30 p-4">
-      <div className="bg-gray-200 border-4 border-black p-6 sm:p-8 w-full max-w-2xl relative text-black">
-        <button onClick={onClose} className="absolute -top-2 -right-2 bg-red-500 border-2 border-black w-8 h-8 text-white font-bold text-xl hover:bg-red-600 flex items-center justify-center z-10">
-          <span className="mb-0.5">X</span>
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-30 p-2 sm:p-4 overflow-hidden">
+      <div className="bg-gray-200 border-4 border-black p-4 w-full max-w-lg max-h-[90vh] overflow-y-auto relative text-black text-sm sm:text-base flex flex-col">
+        <button onClick={onClose} className="absolute top-2 right-2 bg-red-500 border-2 border-black w-8 h-8 text-white font-bold text-lg hover:bg-red-600 flex items-center justify-center z-10 rounded-sm">
+          X
         </button>
-        <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center" style={{ textShadow: '2px 2px #fff' }}>Book Your Spot</h2>
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center mt-2" style={{ textShadow: '1px 1px #fff' }}>Book Your Spot</h2>
 
-        <div className="space-y-6">
-          <div className="relative h-64 sm:h-96 w-full border-2 border-dashed border-black flex items-center justify-center bg-gray-300 text-gray-700">
+        <div className="space-y-4">
+          <div className="relative h-40 sm:h-64 w-full border-2 border-dashed border-black flex items-center justify-center bg-gray-300 text-gray-700 shrink-0">
             {!imageUrl ? (
               <>
                 <div className="text-center">
-                  <UploadIcon className="w-12 h-12 mx-auto" />
-                  <p className="mt-2 text-sm">Upload Image</p>
-                  <p className="text-xs">up to 5MB</p>
+                  <UploadIcon className="w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-2" />
+                  <p className="text-xs sm:text-sm font-bold">Click to Upload Image</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">Max 5MB</p>
                 </div>
                 <input
                   type="file"
@@ -234,7 +234,7 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
 
           {imageUrl && (
             <div>
-              <label htmlFor="zoom" className="block text-sm mb-1">Zoom</label>
+              <label htmlFor="zoom" className="block text-xs font-bold mb-1">Zoom</label>
               <input
                 id="zoom"
                 type="range"
@@ -250,34 +250,34 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
           )}
 
           <div>
-            <label htmlFor="message" className="block text-sm mb-1">Your Message</label>
+            <label htmlFor="message" className="block text-xs font-bold mb-1">Your Message</label>
             <input
               id="message"
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               maxLength={100}
-              className="w-full p-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full p-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm"
               placeholder="Your text here!"
             />
           </div>
 
           <div>
-            <label htmlFor="link" className="block text-sm mb-1">Link URL (optional)</label>
+            <label htmlFor="link" className="block text-xs font-bold mb-1">Link URL (optional)</label>
             <input
               id="link"
               type="url"
               value={link}
               onChange={(e) => setLink(e.target.value)}
-              className="w-full p-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              className="w-full p-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-yellow-400 text-sm"
               placeholder="https://yourwebsite.com"
             />
           </div>
 
-          {error && <p className="text-red-700 text-sm text-center font-bold">{error}</p>}
+          {error && <p className="text-red-600 text-xs text-center font-bold bg-red-100 p-2 border border-red-400">{error}</p>}
         </div>
 
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="mt-6 grid grid-cols-2 gap-3">
           <button
             onClick={handleSubmit}
             disabled={isProcessing}
