@@ -17,14 +17,6 @@ That thought became a **Digital Billboard** — where anyone can own a space for
 Anyone can put up a billboard in Kochi.  
 **Stand out on a digital one.**
 
----
-
-## 🎨 Features
-- **Own a Pixel Space**: Book slots on the grid to display your image or ad.
-- **Weekly Reset**: The board automatically resets every Sunday at midnight, giving everyone a fresh start.
-- **Responsive Retro Design**: distinct Day & Night themes with pixel-art animations (stars, meteors, clouds).
-- **Interactive**: Hover over ads to see messages, click to visit links (with safety prompts).
-
 
 *Built with ❤️, code and curiosity by habeeb in mavelinadu.*
 
