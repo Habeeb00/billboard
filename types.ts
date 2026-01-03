@@ -10,6 +10,7 @@ export interface Ad {
   plots: string[];
   imageUrl: string;
   message: string;
+  link?: string;
   user_id?: string;
 }
 

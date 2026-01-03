@@ -316,7 +316,7 @@ function App() {
     fetchAds(); // Explicitly refetch ads to ensure UI is up-to-date.
   }, [fetchAds]);
 
-  const handlePurchase = useCallback(async (imageBlob: Blob, message: string) => {
+  const handlePurchase = useCallback(async (imageBlob: Blob, message: string, link: string) => {
     if (!session) {
       alert("You must be logged in to book a plot. The login modal will now open.");
       handleCloseModal();
@@ -358,6 +358,7 @@ function App() {
         plots_to_book: sortedPlots,
         image_url_to_insert: imageUrl,
         message_to_insert: message,
+        link_to_insert: link || null,
         user_id_to_insert: session.user.id
       });
 

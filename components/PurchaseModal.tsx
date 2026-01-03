@@ -43,22 +43,22 @@ async function getCroppedImg(imageSrc: string, pixelCrop: Area): Promise<string>
  * Converts a data URL string to a Blob object.
  */
 function dataURLtoBlob(dataurl: string): Blob {
-    const arr = dataurl.split(',');
-    if (arr.length < 2 || !arr[0] || !arr[1]) {
-        throw new Error('Invalid data URL');
-    }
-    const mimeMatch = arr[0].match(/:(.*?);/);
-    if (!mimeMatch) {
-        throw new Error('Could not parse MIME type from data URL');
-    }
-    const mime = mimeMatch[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
+  const arr = dataurl.split(',');
+  if (arr.length < 2 || !arr[0] || !arr[1]) {
+    throw new Error('Invalid data URL');
+  }
+  const mimeMatch = arr[0].match(/:(.*?);/);
+  if (!mimeMatch) {
+    throw new Error('Could not parse MIME type from data URL');
+  }
+  const mime = mimeMatch[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
 }
 
 
@@ -66,7 +66,7 @@ function dataURLtoBlob(dataurl: string): Blob {
 
 interface PurchaseModalProps {
   onClose: () => void;
-  onPurchase: (imageBlob: Blob, message: string) => void;
+  onPurchase: (imageBlob: Blob, message: string, link: string) => void;
   aspectRatio: number;
 }
 
@@ -77,7 +77,7 @@ interface UploadIconProps {
 function UploadIcon({ className }: UploadIconProps) {
   return (
     <svg className={className} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3 3-3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l-3 3m3-3 3-3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
     </svg>
   );
 }
@@ -88,6 +88,7 @@ function UploadIcon({ className }: UploadIconProps) {
 export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModalProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [message, setMessage] = useState('');
+  const [link, setLink] = useState('');
   const [error, setError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -112,10 +113,52 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
       reader.readAsDataURL(file);
     }
   };
-  
+
   const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
+
+  // URL validation to block inappropriate/dangerous links
+  const validateLink = (url: string): { valid: boolean; reason?: string } => {
+    if (!url.trim()) return { valid: true }; // Empty is OK (optional field)
+
+    // Must be a valid URL
+    try {
+      const urlObj = new URL(url);
+
+      // Only allow http/https
+      if (!['http:', 'https:'].includes(urlObj.protocol)) {
+        return { valid: false, reason: 'Only HTTP/HTTPS links are allowed.' };
+      }
+
+      const hostname = urlObj.hostname.toLowerCase();
+
+      // Blocklist of inappropriate/dangerous domains and patterns
+      const blockedPatterns = [
+        // Adult content
+        'porn', 'xxx', 'sex', 'adult', 'nude', 'nsfw', 'xvideos', 'xnxx', 'pornhub',
+        'redtube', 'youporn', 'xhamster', 'brazzers', 'onlyfans', 'fansly',
+        // Gambling
+        'casino', 'betting', 'poker', 'slots', 'gambling',
+        // Malware/phishing common patterns
+        'malware', 'phishing', 'hack', 'crack', 'warez', 'torrent',
+        // URL shorteners (can hide bad links)
+        'bit.ly', 'tinyurl', 't.co', 'goo.gl', 'ow.ly', 'is.gd', 'buff.ly',
+        // Suspicious TLDs
+        '.tk', '.ml', '.ga', '.cf', '.gq'
+      ];
+
+      for (const pattern of blockedPatterns) {
+        if (hostname.includes(pattern) || url.toLowerCase().includes(pattern)) {
+          return { valid: false, reason: 'This type of link is not allowed.' };
+        }
+      }
+
+      return { valid: true };
+    } catch {
+      return { valid: false, reason: 'Please enter a valid URL (e.g., https://example.com)' };
+    }
+  };
 
   const handleSubmit = async () => {
     if (!imageUrl) {
@@ -130,11 +173,21 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
       setError('Could not process image crop. Please adjust the image.');
       return;
     }
+
+    // Validate the link if provided
+    if (link.trim()) {
+      const linkValidation = validateLink(link);
+      if (!linkValidation.valid) {
+        setError(linkValidation.reason || 'Invalid link.');
+        return;
+      }
+    }
+
     setIsProcessing(true);
     try {
       const croppedImageUrl = await getCroppedImg(imageUrl, croppedAreaPixels);
       const imageBlob = dataURLtoBlob(croppedImageUrl);
-      onPurchase(imageBlob, message);
+      onPurchase(imageBlob, message, link);
     } catch (e) {
       setError('Failed to crop image. Please try again with a different image.');
       setIsProcessing(false);
@@ -145,18 +198,18 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-30 p-4">
       <div className="bg-gray-200 border-4 border-black p-6 sm:p-8 w-full max-w-2xl relative text-black">
         <button onClick={onClose} className="absolute -top-2 -right-2 bg-red-500 border-2 border-black w-8 h-8 text-white font-bold text-xl hover:bg-red-600 flex items-center justify-center z-10">
-            <span className="mb-0.5">X</span>
+          <span className="mb-0.5">X</span>
         </button>
         <h2 className="text-xl sm:text-2xl font-bold mb-6 text-center" style={{ textShadow: '2px 2px #fff' }}>Book Your Spot</h2>
-        
+
         <div className="space-y-6">
           <div className="relative h-64 sm:h-96 w-full border-2 border-dashed border-black flex items-center justify-center bg-gray-300 text-gray-700">
             {!imageUrl ? (
               <>
                 <div className="text-center">
-                    <UploadIcon className="w-12 h-12 mx-auto" />
-                    <p className="mt-2 text-sm">Upload Image</p>
-                    <p className="text-xs">up to 5MB</p>
+                  <UploadIcon className="w-12 h-12 mx-auto" />
+                  <p className="mt-2 text-sm">Upload Image</p>
+                  <p className="text-xs">up to 5MB</p>
                 </div>
                 <input
                   type="file"
@@ -167,18 +220,18 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
                 />
               </>
             ) : (
-                <Cropper
-                    image={imageUrl}
-                    crop={crop}
-                    zoom={zoom}
-                    aspect={aspectRatio}
-                    onCropChange={setCrop}
-                    onZoomChange={setZoom}
-                    onCropComplete={onCropComplete}
-                />
+              <Cropper
+                image={imageUrl}
+                crop={crop}
+                zoom={zoom}
+                aspect={aspectRatio}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
             )}
           </div>
-          
+
           {imageUrl && (
             <div>
               <label htmlFor="zoom" className="block text-sm mb-1">Zoom</label>
@@ -208,7 +261,19 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
               placeholder="Your text here!"
             />
           </div>
-          
+
+          <div>
+            <label htmlFor="link" className="block text-sm mb-1">Link URL (optional)</label>
+            <input
+              id="link"
+              type="url"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              className="w-full p-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-yellow-400"
+              placeholder="https://yourwebsite.com"
+            />
+          </div>
+
           {error && <p className="text-red-700 text-sm text-center font-bold">{error}</p>}
         </div>
 
@@ -220,7 +285,7 @@ export function PurchaseModal({ onClose, onPurchase, aspectRatio }: PurchaseModa
           >
             {isProcessing ? 'Processing...' : 'Book Now'}
           </button>
-           <button
+          <button
             onClick={onClose}
             className="w-full px-4 py-3 bg-gray-400 text-black border-2 border-b-4 border-black hover:bg-gray-500 active:border-b-2 active:mt-0.5"
           >

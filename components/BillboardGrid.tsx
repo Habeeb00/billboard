@@ -131,12 +131,20 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({ ad, isAdmin, onDeleteAd, onMo
         onDeleteAd(ad.id);
     }
 
+    const handleLinkClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (ad.link) {
+            window.open(ad.link, '_blank', 'noopener,noreferrer');
+        }
+    }
+
     return (
         <div
-            className="relative group bg-black"
+            className={`relative group bg-black ${ad.link ? 'cursor-pointer' : ''}`}
             style={getAdBoundingBox(ad)}
             onMouseEnter={(e) => onMouseEnter(e, ad)}
             onMouseLeave={onMouseLeave}
+            onClick={!isAdmin && ad.link ? handleLinkClick : undefined}
             aria-label={`Ad: ${ad.message}`}
         >
             <img
@@ -144,9 +152,26 @@ const PurchasedAd: React.FC<PurchasedAdProps> = ({ ad, isAdmin, onDeleteAd, onMo
                 alt={ad.message}
                 className="w-full h-full object-cover"
             />
+            {/* Non-admin hover overlay with link */}
+            {isHovered && !isAdmin && ad.link && (
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 transition-opacity">
+                    <span className="bg-white text-black px-3 py-1 text-xs font-bold border-2 border-black shadow-md">
+                        🔗 Visit
+                    </span>
+                </div>
+            )}
+            {/* Admin hover overlay */}
             {isHovered && isAdmin && (
-                <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-2 z-10">
-                    <p className="text-white text-xs text-center truncate mb-2">{ad.message}</p>
+                <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-2 z-10 gap-2">
+                    <p className="text-white text-xs text-center truncate">{ad.message}</p>
+                    {ad.link && (
+                        <button
+                            onClick={handleLinkClick}
+                            className="bg-blue-500 text-white border-2 border-b-4 border-black px-3 py-1 text-xs hover:bg-blue-600 active:border-b-2 active:mt-0.5 transition-all"
+                        >
+                            🔗 Visit Link
+                        </button>
+                    )}
                     <button
                         onClick={handleDeleteClick}
                         className="bg-red-500 text-white border-2 border-b-4 border-black px-3 py-1 text-xs hover:bg-red-600 active:border-b-2 active:mt-0.5 transition-all"
