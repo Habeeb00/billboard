@@ -12,12 +12,11 @@ What if visibility wasn’t forced?
 What if it was chosen?
 
 That thought became a **Digital Billboard** — where anyone can own a space for a week, with zero wastage, at a lower cost.
+
 <img width="1915" height="938" alt="image" src="https://github.com/user-attachments/assets/50826131-6503-4f6b-976b-c76f2384d932" />
 
 Anyone can put up a billboard in Kochi.  
 **Stand out on a digital one.**
-
-For the first few users, posting is completely free (limited slots).
 
 ---
 
@@ -31,12 +30,10 @@ For the first few users, posting is completely free (limited slots).
 ## 📸 Gallery
 
 <!-- Upload your screenshots here and replace the links below -->
-![Hero Section](<img width="1915" height="938" alt="image" src="https://github.com/user-attachments/assets/b0b16a1b-4d64-4c4b-8042-b6cdfdd83b6c" />
-)
+<img width="1915" height="938" alt="image" src="https://github.com/user-attachments/assets/b0b16a1b-4d64-4c4b-8042-b6cdfdd83b6c" />
 *Day Mode*
 
-![Night Mode](<img width="1919" height="941" alt="image" src="https://github.com/user-attachments/assets/c522a3bc-ea19-4500-b53e-8f252b1f9ef3" />
-)
+<img width="1919" height="941" alt="image" src="https://github.com/user-attachments/assets/c522a3bc-ea19-4500-b53e-8f252b1f9ef3" />
 *Night Mode with Meteors*
 
 
