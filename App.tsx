@@ -614,6 +614,15 @@ function App() {
       </div>
 
       <div className="relative z-10 w-full h-full pointer-events-none">
+        {/* Logo - Top Left */}
+        <div className="absolute top-6 left-10 flex items-center pointer-events-auto z-20">
+          <img
+            src="/logo-text.png"
+            alt="The Billboard Logo"
+            className={`w-16 md:w-24 h-auto object-contain transition-all duration-1000 ${theme === 'night' ? 'invert brightness-0' : ''}`}
+          />
+        </div>
+
         <div className="absolute top-4 right-4 flex flex-col sm:flex-row gap-2 pointer-events-auto">
           <button
             onClick={cycleTheme}
