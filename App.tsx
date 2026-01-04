@@ -5,6 +5,7 @@ import { PurchaseModal } from './components/PurchaseModal';
 import { SuccessModal } from './components/SuccessModal';
 import { BillboardGrid } from './components/BillboardGrid';
 import { AuthModal } from './components/AuthModal';
+import { AboutModal } from './components/AboutModal';
 import type { Ad, Theme } from './types';
 
 
@@ -333,6 +334,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>('day');
   const [selectionAspectRatio, setSelectionAspectRatio] = useState(1);
   const [session, setSession] = useState<Session | null>(null);
@@ -625,6 +627,13 @@ function App() {
 
         <div className="absolute top-4 right-4 flex flex-col sm:flex-row gap-2 pointer-events-auto">
           <button
+            onClick={() => setIsAboutModalOpen(true)}
+            className="bg-yellow-400 text-black border-2 border-b-4 border-black px-2 py-1 text-xs sm:px-4 sm:py-2 sm:text-sm hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all"
+            aria-label="Open about modal"
+          >
+            ABOUT
+          </button>
+          <button
             onClick={cycleTheme}
             className="bg-yellow-400 text-black border-2 border-b-4 border-black px-2 py-1 text-xs sm:px-4 sm:py-2 sm:text-sm hover:bg-yellow-500 active:border-b-2 active:mt-0.5 transition-all"
             aria-label={`Switch theme from ${theme}`}
@@ -729,6 +738,12 @@ function App() {
       {
         isAuthModalOpen && (
           <AuthModal onClose={() => setIsAuthModalOpen(false)} />
+        )
+      }
+
+      {
+        isAboutModalOpen && (
+          <AboutModal onClose={() => setIsAboutModalOpen(false)} />
         )
       }
 
