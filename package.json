@@ -1,5 +1,5 @@
 {
-  "name": "copy-of-the-digital-billboard",
+  "name": "The-digital-billboard",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,19 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@supabase/supabase-js": "2",
-    "@vercel/analytics": "^1.6.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-easy-crop": "latest"
+    "react-easy-crop": "latest",
+    "@supabase/supabase-js": "2"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
-    "autoprefixer": "^10.4.23",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.18",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }
